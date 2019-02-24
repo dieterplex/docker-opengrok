@@ -14,10 +14,11 @@ to start an instance of OpenGrok by one command.
 To start the OpenGrok, simply run:
 
 ```sh
-docker run --privileged -d -v PATH/opengrok:/grok -p [public port]:8080 jrjang/docker-opengrok
+docker run --privileged -d -v <SRC_PATH>:/opengrok/src -v <DATA_PATH>:/opengrok/data -p [public port]:8080 dieterplex/docker-opengrok
 ```
 
-Put the source codes under PATH/opengrok/src on host.
+Put the source codes under `SRC_PATH` on host.
+(Optional)Put the indexed data under `DATA_PATH` on host.
 
 It may take a while for the indexer to finish the first-time indexing, after
 that, the search engine is available at `http://host:[public port]/source/`.
@@ -26,6 +27,6 @@ that, the search engine is available at `http://host:[public port]/source/`.
 
 The project supports dynamic index updating through `inotifywait` recursively on the source folder. 
 This can be disabled with the environment variable `INOTIFY_NOT_RECURSIVE` at runtime.
-Also, if you have more than 8192 files to watch, you will need to increase the amount of inotify watches allowed per user `(/proc/sys/fs/inotify/max_user_watches)` on your host system.
+Also, if you have more than 8192 files to watch, it has been modified for you to increase the amount of inotify watches allowed per user `(/proc/sys/fs/inotify/max_user_watches)` on your host system.
 
 NOTE: `touch` doesn't trigger inotify. You should add, delete or modify the content of some source file to make it happen.
