@@ -13,14 +13,16 @@ ADD run.sh /rungrok
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-                    openjdk-8-jre-headless tomcat8 libtcnative-1 inotify-tools \
-                    exuberant-ctags git subversion mercurial curl \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+                    openjdk-8-jre-headless exuberant-ctags git subversion mercurial \
+                    tomcat8 libtcnative-1 curl inotify-tools libarchive-tools \
 
 RUN mkdir /opengrok \
- && curl -Lo - https://github.com/OpenGrok/OpenGrok/files/213268/opengrok-0.12.1.5.tar.gz \
+ && wget -O - https://github.com/OpenGrok/OpenGrok/files/467358/opengrok-0.12.1.6.tar.gz.zip \
+  | bsdtar xOf - \
   | tar zxvf - -C /opengrok --strip-components=1
+
+RUN apt-get clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENTRYPOINT ["/rungrok"]
 
